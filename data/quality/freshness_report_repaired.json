@@ -1,0 +1,10 @@
+{
+  "total_rows": 24,
+  "latest_published": "2026-08-05T14:17:54+00:00",
+  "oldest_published": "2026-01-25T14:31:54+00:00",
+  "stale_rows": 1,
+  "invalid_age_days": 0,
+  "freshness_threshold_days": 180,
+  "is_fresh": false,
+  "status": "stale"
+}

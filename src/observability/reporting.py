@@ -55,10 +55,13 @@ def generate_corruption_report(
     baseline_metrics: dict[str, Any],
     corrupted_metrics: dict[str, Any],
     repaired_metrics: dict[str, Any],
+    baseline_quality: dict[str, Any],
     corrupted_quality: dict[str, Any],
     repaired_quality: dict[str, Any],
+    baseline_freshness: dict[str, Any],
     corrupted_freshness: dict[str, Any],
     repaired_freshness: dict[str, Any],
+    corruption_log: dict[str, Any] | None = None,
 ) -> None:
     """Viet markdown report so sanh baseline/corrupted/repaired."""
     b_hr = baseline_metrics.get("retrieval_hit_rate", 0.0)
@@ -86,10 +89,29 @@ def generate_corruption_report(
     score_delta = c_score - b_score
     score_recovery = r_score - c_score
 
+    b_passed = baseline_quality.get("summary", {}).get("passed", 0)
+    b_total = len(baseline_quality.get("checks", []))
     c_passed = corrupted_quality.get("summary", {}).get("passed", 0)
     c_total = len(corrupted_quality.get("checks", []))
     r_passed = repaired_quality.get("summary", {}).get("passed", 0)
     r_total = len(repaired_quality.get("checks", []))
+
+    row_count_rows = ""
+    events_by_type = (corruption_log or {}).get("events_by_type")
+    if events_by_type:
+        b_rows = (corruption_log or {}).get("baseline_row_count", "N/A")
+        c_rows = (corruption_log or {}).get("corrupted_row_count", "N/A")
+        type_lines = "\n".join(f"| `{name}` | {count} |" for name, count in sorted(events_by_type.items()))
+        row_count_rows = f"""
+## 2. Corruption Log Summary
+
+- **Baseline row count:** `{b_rows}`
+- **Corrupted row count:** `{c_rows}`
+
+| Corruption Type | Records Affected |
+| :--- | :---: |
+{type_lines}
+"""
 
     md = f"""# RAG Pipeline Corruption & Repair Comparison Report
 
@@ -101,17 +123,17 @@ def generate_corruption_report(
 | **Mean Token F1** | `{b_f1:.4f}` | `{c_f1:.4f}` | `{r_f1:.4f}` | `{f1_delta:+.4f}` | `{f1_recovery:+.4f}` |
 | **Judge Accuracy** | `{b_acc:.4f}` | `{c_acc:.4f}` | `{r_acc:.4f}` | `{acc_delta:+.4f}` | `{acc_recovery:+.4f}` |
 | **Mean Judge Score** | `{b_score:.4f}` | `{c_score:.4f}` | `{r_score:.4f}` | `{score_delta:+.4f}` | `{score_recovery:+.4f}` |
-
-## 2. Data Observability Comparison
+{row_count_rows}
+## 3. Data Observability Comparison
 
 | Metric | Baseline | Corrupted | Repaired |
 | :--- | :--- | :--- | :--- |
-| **Data Quality Checks Passed** | All Passed | `{c_passed} / {c_total}` Checks Passed | `{r_passed} / {r_total}` Checks Passed |
-| **Freshness Status** | Fresh | `{corrupted_freshness.get("status", "N/A")}` | `{repaired_freshness.get("status", "N/A")}` |
+| **Data Quality Checks Passed** | `{b_passed} / {b_total}` | `{c_passed} / {c_total}` | `{r_passed} / {r_total}` |
+| **Freshness Status** | `{baseline_freshness.get("status", "N/A")}` | `{corrupted_freshness.get("status", "N/A")}` | `{repaired_freshness.get("status", "N/A")}` |
 
-## 3. Analysis & Key Insights
-1. **Data Corruption Impact:** Data corruption (dropping records, blanking text, staling timestamps, etc.) directly causes a degradation in data quality checks and freshness signals, which in turn leads to drop-offs in RAG retrieval performance and response accuracy metrics.
-2. **Data Repair Effectiveness:** Repairing the dataset by re-fetching and cleaning from the authoritative raw Crossref records successfully restores the RAG performance metrics, quality checks, and freshness status back to baseline levels.
+## 4. Analysis & Key Insights
+1. **Data Corruption Impact:** Data corruption (dropping records, blanking/noising summary text, truncating titles, staling timestamps, duplicating rows) directly causes measurable degradation in data quality checks, freshness signals, and/or RAG retrieval and answer-quality metrics — see the deltas above and the corruption log summary for which fault types were applied.
+2. **Data Repair Effectiveness:** Repairing the dataset by re-cleaning from the authoritative raw Crossref records (not by hand-editing corrupted rows) restores quality/freshness signals and RAG metrics back toward baseline levels — see the recovery deltas above. Any metric that does not fully recover is reported as-is rather than assumed fixed.
 
 ---
 *Report generated automatically by Data Pipeline Observability Engine.*
