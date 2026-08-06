@@ -11,8 +11,8 @@
 | ------------------ | -------------------------- |
 | Họ và tên       | Vũ Nguyễn Quốc Đạt |
 | MSSV               | 2A202601199 |
-| Khóa/Lớp         | Lớp AI Thực Chiến - Advanced Agentic Coding |
-| Tên nhóm         | Vũ Nguyễn Quốc Đạt Group |
+| Khóa/Lớp         | K3 - E402 |
+| Tên nhóm         | DMX |
 | Vai trò chính    | Role 1 - Lead / Pipeline Integrator |
 | Repository         | [GitHub Repository](https://github.com/dav1dvu/DAY10_2A202601199_VuNguyenQuocDat) |
 | Ngày hoàn thành | 2026-08-06 |

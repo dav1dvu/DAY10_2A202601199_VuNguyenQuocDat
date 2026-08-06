@@ -1,6 +1,6 @@
 # Member Role Report — Day 10: Data Pipeline & Data Observability
 **Thành viên:** Vũ Tú Quỳnh (Role 3 - Cleaning & Corruption Owner)
-**MSSV:** 2A202601199_Q
+**MSSV:** 2A202601239
 **Dự án:** Day 10 — Data Pipeline & Data Observability Lab
 
 ---
@@ -10,9 +10,9 @@
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
 | Họ và tên       | Vũ Tú Quỳnh |
-| MSSV               | 2A202601199_Q |
-| Khóa/Lớp         | Lớp AI Thực Chiến - Advanced Agentic Coding |
-| Tên nhóm         | Vũ Nguyễn Quốc Đạt Group |
+| MSSV               | 2A202601239 |
+| Khóa/Lớp         | K3 - E402 |
+| Tên nhóm         | DMX |
 | Vai trò chính    | Role 3 - Cleaning & Corruption Owner |
 | Repository         | [GitHub Repository](https://github.com/dav1dvu/DAY10_2A202601199_VuNguyenQuocDat) |
 | Ngày hoàn thành | 2026-08-06 |

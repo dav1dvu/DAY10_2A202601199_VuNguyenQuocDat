@@ -1,6 +1,6 @@
 # Member Role Report — Day 10: Data Pipeline & Data Observability
 **Thành viên:** Trần Thị Ngọc Lan (Role 5 - Observability Owner)
-**MSSV:** 2A202601199_L
+**MSSV:** 2A202601385
 **Dự án:** Day 10 — Data Pipeline & Data Observability Lab
 
 ---
@@ -10,9 +10,9 @@
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
 | Họ và tên       | Trần Thị Ngọc Lan |
-| MSSV               | 2A202601199_L |
-| Khóa/Lớp         | Lớp AI Thực Chiến - Advanced Agentic Coding |
-| Tên nhóm         | Vũ Nguyễn Quốc Đạt Group |
+| MSSV               | 2A202601385 |
+| Khóa/Lớp         | K3 - E402 |
+| Tên nhóm         | DMX |
 | Vai trò chính    | Role 5 - Observability Owner |
 | Repository         | [GitHub Repository](https://github.com/dav1dvu/DAY10_2A202601199_VuNguyenQuocDat) |
 | Ngày hoàn thành | 2026-08-06 |

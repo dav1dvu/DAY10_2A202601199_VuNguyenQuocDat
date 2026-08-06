@@ -8,8 +8,8 @@
 
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
-| Khóa/Lớp         | Lớp AI Thực Chiến - Advanced Agentic Coding |
-| Tên nhóm         | Vũ Nguyễn Quốc Đạt Group |
+| Khóa/Lớp         | K3 - E402 |
+| Tên nhóm         | DMX |
 | Repository         | [GitHub Repository](https://github.com/dav1dvu/DAY10_2A202601199_VuNguyenQuocDat) |
 | Ngày hoàn thành | 2026-08-06 |
 
@@ -18,10 +18,10 @@
 | STT | Họ và tên | MSSV | Vai trò chính | Module/deliverable sở hữu |
 | --: | --- | --- | --- | --- |
 | 1 | Vũ Nguyễn Quốc Đạt | 2A202601199 | Role 1 - Lead / Pipeline Integrator | Cấu hình, điều phối E2E pipeline, báo cáo CP [src/pipelines/](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/pipelines/) |
-| 2 | Nguyễn Hoàng Biên | 2A202601199_B | Role 2 - Ingestion Owner | Gọi API Crossref, lấy raw data [src/ingestion/crossref.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/ingestion/crossref.py) |
-| 3 | Vũ Tú Quỳnh | 2A202601199_Q | Role 3 - Cleaning & Corruption | Tiền xử lý, giả lập lỗi dữ liệu [src/ingestion/cleaning.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/ingestion/cleaning.py), [src/ingestion/corruption.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/ingestion/corruption.py) |
-| 4 | Nguyễn Ngọc Nam | 2A202601199_N | Role 4 - Evaluation Owner | Lập test set câu hỏi, đo đạc chỉ số RAG Agent [src/evaluation/](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/evaluation/) |
-| 5 | Trần Thị Ngọc Lan | 2A202601199_L | Role 5 - Observability Owner | Kiểm định chất lượng dữ liệu, freshness, so sánh [src/observability/](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/observability/) |
+| 2 | Nguyễn Hoàng Biên | 2A202601233 | Role 2 - Ingestion Owner | Gọi API Crossref, lấy raw data [src/ingestion/crossref.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/ingestion/crossref.py) |
+| 3 | Vũ Tú Quỳnh | 2A202601239 | Role 3 - Cleaning & Corruption | Tiền xử lý, giả lập lỗi dữ liệu [src/ingestion/cleaning.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/ingestion/cleaning.py), [src/ingestion/corruption.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/ingestion/corruption.py) |
+| 4 | Nguyễn Ngọc Nam | 2A202601561 | Role 4 - Evaluation Owner | Lập test set câu hỏi, đo đạc chỉ số RAG Agent [src/evaluation/](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/evaluation/) |
+| 5 | Trần Thị Ngọc Lan | 2A202601385 | Role 5 - Observability Owner | Kiểm định chất lượng dữ liệu, freshness, so sánh [src/observability/](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/observability/) |
 
 ---
 
