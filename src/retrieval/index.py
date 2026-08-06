@@ -98,10 +98,20 @@ class LocalEmbeddingIndex:
             client.delete_collection(name=collection_name)
         except Exception:
             pass
-        collection = client.create_collection(
-            name=collection_name,
-            configuration={"hnsw": {"space": "cosine"}},
-        )
+        
+        try:
+            collection = client.create_collection(
+                name=collection_name,
+                configuration={"hnsw": {"space": "cosine"}},
+            )
+        except Exception:
+            collection = client.get_or_create_collection(
+                name=collection_name,
+                metadata={"hnsw:space": "cosine"},
+            )
+            existing = collection.get()
+            if existing and existing.get("ids"):
+                collection.delete(ids=existing["ids"])
         embeddings = embedding_model.embed_documents([document["content"] for document in documents])
         collection.add(
             ids=[document["record_id"] for document in documents],
