@@ -38,12 +38,14 @@
 | **CP2** | Ghi nhận blocker và chạy smoke test | `data/eval/test_set.json`<br>`data/embeddings/papers_embeddings.json` | Khởi tạo thành công bộ câu hỏi (18 câu) và vector index | Chạy smoke test RAG Agent (search & lookup) thành công |
 | **CP3** | Triển khai baseline pipeline end-to-end | `src/pipelines/phase1.py` | Điều phối toàn bộ dữ liệu thô $\rightarrow$ sạch $\rightarrow$ index $\rightarrow$ đánh giá $\rightarrow$ báo cáo | Chạy `uv run python script/run_phase1.py` thành công |
 | **CP3** | Cài đặt module xuất báo cáo Markdown | `src/observability/reporting.py` | Hàm tự động xuất báo cáo Phase 1 & báo cáo so sánh | Sinh thành công báo cáo [phase1_report.md](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/data/reports/phase1_report.md) |
+| **CP4** | Nghỉ giải lao & chốt kế hoạch giả lập lỗi | [checkpoint_4_break_report.md](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/report/checkpoint_4_break_report.md) | Bản kế hoạch chi tiết kịch bản dữ liệu lỗi cho 5 vai trò | Đã nộp báo cáo giải lao CP4 |
 
-## 4. Giải thích phần kỹ thuật đã thực hiện (Checkpoint 2 & 3)
+## 4. Giải thích phần kỹ thuật đã thực hiện (Checkpoint 2 & 3 & 4)
 
 ### Vấn đề cần giải quyết
 1.  **Thiết lập pipeline tự động (CP3):** Điều phối toàn bộ vòng đời dữ liệu của Baseline pha 1, bao gồm việc đọc/tải dữ liệu thô từ API Crossref, chạy Cleaning để loại bỏ HTML/JATS, xây dựng chỉ mục vector ChromaDB, sinh test set đánh giá, đo đạc hiệu năng RAG, chạy data quality checks & freshness, và cuối cùng xuất báo cáo Markdown.
 2.  **Module báo cáo tự động (CP3):** Lập trình các hàm xuất dữ liệu chất lượng, độ tươi mới và hiệu năng RAG thành báo cáo trực quan cho các checkpoint sau.
+3.  **Kế hoạch Corruption (CP4):** Thống nhất kịch bản làm lỗi dữ liệu (droppping records, blanking text, staling timestamps, etc.) để chuẩn bị chạy tích hợp trong CP5.
 
 ### Cách triển khai & Triển khai baseline (Phase 1)
 Tôi đã viết code triển khai cho `src/pipelines/phase1.py` thực hiện:
