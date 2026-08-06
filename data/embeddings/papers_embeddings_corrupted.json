@@ -4,7 +4,7 @@
   "collection_name": "papers-corrupted",
   "document_count": 24,
   "source_path": "C:\\CODE\\AITHUCCHIEN\\LABS\\DAY10_2A202601199_VuNguyenQuocDat\\data\\clean\\papers_clean.csv",
-  "build_time": "2026-08-06T07:15:02.809933+00:00",
+  "build_time": "2026-08-06T07:18:48.150364+00:00",
   "vector_dimension": 384,
   "metadata_fields": [
     "paper_id",
