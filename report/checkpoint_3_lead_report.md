@@ -24,10 +24,11 @@ Chạy thử nghiệm thành công bằng lệnh `uv run python script/run_phase
 - **Dữ liệu sạch lưu trữ:** 24 papers sạch (lưu tại `data/clean/papers_clean.json` và `papers_clean.csv`).
 - **Chất lượng RAG Agent:**
   - **Retrieval Hit Rate:** `1.0000` (Truy xuất trúng 100% ngữ cảnh đúng từ ground truth).
-  - **Mean Token F1 Score:** `0.9840` (Điểm số so khớp token cực cao do cơ chế trích xuất dữ liệu xác thực).
+  - **Mean Token F1 Score:** `1.0000` (Điểm số so khớp token tuyệt đối do cơ chế trích xuất dữ liệu xác thực).
+  - **Judge Accuracy / Mean Judge Score:** `1.0000` / `5.0000` (Đánh giá bởi LLM judge thật — Gemini, sau khi cấu hình `GOOGLE_API_KEY`).
 - **Trạng thái Observability:**
-  - **Quality Checks:** `9 / 9` kiểm tra thành công (Không có lỗi ID trống, trùng lặp, thiếu thông tin).
-  - **Freshness Status:** `fresh` (Tuổi thọ trung bình của dữ liệu bài viết nằm trong ngưỡng freshness 180 ngày).
+  - **Quality Checks:** `8 / 9` kiểm tra thành công (Không có lỗi ID trống, trùng lặp, thiếu thông tin; check `freshness_threshold` fail thật vì có 1 record cũ hơn ngưỡng 180 ngày).
+  - **Freshness Status:** `stale` (1 record có `age_days = 192`, vượt ngưỡng freshness 180 ngày — dữ liệu baseline không "fresh" tuyệt đối, đây là tín hiệu thật cần theo dõi khi so sánh với corrupted/repaired ở CP5/CP6).
 
 ---
 
@@ -38,14 +39,17 @@ Mọi file kết quả đều đã được lưu trữ đúng quy hoạch thư m
 | :--- | :--- | :---: | :--- |
 | **Clean JSON** | `data/clean/papers_clean.json` | ✅ Tồn tại | ~112 KB |
 | **Clean CSV** | `data/clean/papers_clean.csv` | ✅ Tồn tại | ~97 KB |
-| **Chroma Database** | `data/chroma/chroma.sqlite3` | ✅ Tồn tại | ~960 KB |
+| **Chroma Database** | `data/chroma/chroma.sqlite3` | ✅ Tồn tại cục bộ* | ~960 KB |
 | **Embedding Manifest** | `data/embeddings/papers_embeddings.json` | ✅ Tồn tại | ~114 KB |
 | **Test Set JSON** | `data/eval/test_set.json` | ✅ Tồn tại | ~10 KB |
 | **Evaluation Metrics** | `data/results/baseline_metrics.json` | ✅ Tồn tại | ~1 KB |
 | **Evaluation Answers** | `data/results/baseline_answers.json` | ✅ Tồn tại | ~20 KB |
-| **Quality Report** | `data/quality/baseline_quality.json` | ✅ Tồn tại | ~2 KB |
+| **Agent Demo Answers** | `data/results/agent_demo_answers.json` | ✅ Tồn tại | ~1 KB |
+| **Quality Report** | `data/quality/baseline-quality.json` | ✅ Tồn tại | ~2 KB |
 | **Freshness Report** | `data/quality/freshness_report.json` | ✅ Tồn tại | ~1 KB |
 | **Baseline Report MD** | `data/reports/phase1_report.md` | ✅ Tồn tại | ~2 KB |
 
+\* `data/chroma/` nằm trong `.gitignore` (không commit vector DB nhị phân) nên chỉ tồn tại trên máy đã chạy `run_phase1.py`; mỗi máy checkout mới cần chạy lại pipeline (hoặc riêng bước build index) để có collection Chroma thật trước khi demo semantic search/agent.
+
 ---
-**Xác nhận mốc CP3:** Đạt (Role 1) xác nhận đã hoàn thành chạy baseline pipeline, toàn bộ artifacts đã được kiểm định đầy đủ và không phát sinh lỗi/blocker. Sẵn sàng sang Checkpoint 4 (nghỉ) và Checkpoint 5 (Corrupt dữ liệu).
+**Xác nhận mốc CP3:** Đạt. Role 1 xác nhận đã hoàn thành chạy baseline pipeline, toàn bộ artifacts tồn tại và khớp với `data/reports/phase1_report.md` (report tự động). Baseline có 1 tín hiệu quality thật cần lưu ý — `freshness_threshold` fail do 1 record 192 ngày tuổi (dữ liệu `stale`, không phải "fresh") — đây không phải lỗi pipeline mà là đặc điểm thật của dữ liệu Crossref lấy về, dùng làm mốc so sánh ở CP5/CP6. Không có blocker chặn tiến độ. Sẵn sàng sang Checkpoint 4 (nghỉ) và Checkpoint 5 (Corrupt dữ liệu).

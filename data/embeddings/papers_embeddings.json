@@ -3,8 +3,8 @@
   "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
   "collection_name": "papers-baseline",
   "document_count": 24,
-  "source_path": "C:\\CODE\\AITHUCCHIEN\\LABS\\DAY10_2A202601199_VuNguyenQuocDat\\data\\clean\\papers_clean.csv",
-  "build_time": "2026-08-06T05:33:30.260361+00:00",
+  "source_path": "D:\\AI lab\\DAY10_2A202601199_VuNguyenQuocDat\\data\\clean\\papers_clean.csv",
+  "build_time": "2026-08-06T06:01:26.743535+00:00",
   "vector_dimension": 384,
   "metadata_fields": [
     "paper_id",
@@ -17,5 +17,5 @@
     "pdf_url"
   ],
   "build_status": "success",
-  "persist_path": "C:\\CODE\\AITHUCCHIEN\\LABS\\DAY10_2A202601199_VuNguyenQuocDat\\data\\chroma"
+  "persist_path": "D:\\AI lab\\DAY10_2A202601199_VuNguyenQuocDat\\data\\chroma"
 }
