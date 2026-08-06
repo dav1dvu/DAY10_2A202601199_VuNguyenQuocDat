@@ -7,6 +7,13 @@ import pandas as pd
 from core.utils import first_sentence, normalize_whitespace, safe_slug, write_json
 
 
+def _normalized_cell(value: object) -> str:
+    """Convert a scalar dataframe cell to text without turning NaN into `nan`."""
+    if value is None or pd.isna(value):
+        return ""
+    return normalize_whitespace(str(value))
+
+
 def build_test_set(df: pd.DataFrame, output_path) -> list[dict[str, Any]]:
     """Build a deterministic test set from available clean-data fields.
 
@@ -22,12 +29,12 @@ def build_test_set(df: pd.DataFrame, output_path) -> list[dict[str, Any]]:
 
     candidates: list[dict[str, str]] = []
     for row in df.to_dict(orient="records"):
-        paper_id = normalize_whitespace(str(row.get("paper_id") or ""))
-        title = normalize_whitespace(str(row.get("title") or ""))
-        summary = normalize_whitespace(str(row.get("summary") or ""))
-        authors = normalize_whitespace(str(row.get("authors_joined") or ""))
-        published = normalize_whitespace(str(row.get("published") or ""))
-        categories = normalize_whitespace(str(row.get("categories_joined") or ""))
+        paper_id = _normalized_cell(row.get("paper_id"))
+        title = _normalized_cell(row.get("title"))
+        summary = _normalized_cell(row.get("summary"))
+        authors = _normalized_cell(row.get("authors_joined"))
+        published = _normalized_cell(row.get("published"))
+        categories = _normalized_cell(row.get("categories_joined"))
         if paper_id and title and summary and published:
             candidates.append(
                 {
