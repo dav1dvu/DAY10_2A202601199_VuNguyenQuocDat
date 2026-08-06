@@ -110,15 +110,21 @@ class LocalEmbeddingIndex:
             metadatas=[document["metadata"] for document in documents],
         )
 
+        from datetime import datetime, timezone
         manifest_path = embeddings_output_path or settings.paths.embeddings_json
         write_json(
             manifest_path,
             {
                 "backend": "chroma",
                 "embedding_model": settings.embedding_model,
-                "persist_path": str(persist_path),
                 "collection_name": collection_name,
-                "documents": documents,
+                "document_count": len(documents),
+                "source_path": str(settings.paths.clean_csv),
+                "build_time": datetime.now(timezone.utc).isoformat(),
+                "vector_dimension": 384 if "MiniLM" in settings.embedding_model else None,
+                "metadata_fields": ["paper_id", "title", "published", "authors_joined", "categories_joined", "summary", "abs_url", "pdf_url"],
+                "build_status": "success",
+                "persist_path": str(persist_path),
             },
         )
         return cls(

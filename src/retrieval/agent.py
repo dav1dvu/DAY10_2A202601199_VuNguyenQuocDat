@@ -14,7 +14,13 @@ def build_agent(settings: Settings, index: LocalEmbeddingIndex):
     @tool
     def semantic_search_papers(query: str, top_k: int = 4) -> str:
         """Search the local paper corpus with embeddings and return the most relevant papers."""
-        results = index.search(query, top_k=top_k)
+        try:
+            results = index.search(query, top_k=top_k)
+        except Exception:
+            return "Error: Could not search the collection or collection is empty."
+        if not results:
+            return "No relevant papers found in the corpus."
+            
         lines = []
         for result in results:
             lines.append(
@@ -44,7 +50,7 @@ def build_agent(settings: Settings, index: LocalEmbeddingIndex):
         system_prompt=(
             "You answer questions about the indexed scholarly paper corpus sourced from Crossref. "
             "Use tools before answering factual questions. "
-            "If the indexed corpus does not support the answer, say so clearly."
+            "If the indexed corpus does not support the answer, say so clearly. Do not hallucinate outside the corpus."
         ),
         name="paper_corpus_agent",
     )
