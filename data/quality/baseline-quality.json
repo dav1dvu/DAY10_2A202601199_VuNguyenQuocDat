@@ -1,0 +1,84 @@
+{
+  "report_name": "baseline_quality",
+  "total_rows": 24,
+  "freshness_threshold_days": 180,
+  "checks": [
+    {
+      "name": "row_count",
+      "dimension": "completeness",
+      "expected": ">= 1",
+      "value": 24,
+      "passed": true,
+      "status": "pass"
+    },
+    {
+      "name": "paper_id_present",
+      "dimension": "completeness",
+      "expected": "0 blank IDs",
+      "value": 0,
+      "passed": true,
+      "status": "pass"
+    },
+    {
+      "name": "paper_id_unique",
+      "dimension": "uniqueness",
+      "expected": "0 duplicate IDs",
+      "value": 0,
+      "passed": true,
+      "status": "pass"
+    },
+    {
+      "name": "title_present",
+      "dimension": "completeness",
+      "expected": "0 blank titles",
+      "value": 0,
+      "passed": true,
+      "status": "pass"
+    },
+    {
+      "name": "summary_min_length",
+      "dimension": "completeness",
+      "expected": "0 summaries shorter than 20 characters",
+      "value": 0,
+      "passed": true,
+      "status": "pass"
+    },
+    {
+      "name": "embedding_text_present",
+      "dimension": "completeness",
+      "expected": "0 blank embedding texts",
+      "value": 0,
+      "passed": true,
+      "status": "pass"
+    },
+    {
+      "name": "duplicate_rows",
+      "dimension": "uniqueness",
+      "expected": "0 duplicate rows",
+      "value": 0,
+      "passed": true,
+      "status": "pass"
+    },
+    {
+      "name": "age_days_valid",
+      "dimension": "validity",
+      "expected": "all non-negative numeric values",
+      "value": 0,
+      "passed": true,
+      "status": "pass"
+    },
+    {
+      "name": "freshness_threshold",
+      "dimension": "freshness",
+      "expected": "0 rows older than 180 days",
+      "value": 1,
+      "passed": false,
+      "status": "fail"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 1,
+    "all_passed": false
+  }
+}

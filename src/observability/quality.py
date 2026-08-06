@@ -38,7 +38,7 @@ def run_data_quality_checks(df: pd.DataFrame, settings: Settings, report_name: s
     blank_titles = int((titles == "").sum())
     short_summaries = int((summaries.str.len() < 20).sum())
     blank_embedding_texts = int((embedding_texts == "").sum())
-    duplicate_rows = int(df.duplicated().sum())
+    duplicate_rows = int(df.drop(columns=["authors", "categories"], errors="ignore").duplicated().sum())
     invalid_age_days = int(age_days.isna().sum() + (age_days < 0).sum())
     stale_rows = int((age_days > settings.freshness_threshold_days).sum())
 

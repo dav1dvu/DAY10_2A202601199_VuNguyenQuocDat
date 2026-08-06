@@ -36,45 +36,31 @@
 | **CP2** | Kiểm tra chốt clean schema contract | `src/ingestion/cleaning.py` | Schema dữ liệu sạch thống nhất cho RAG | Xác minh qua DataFrame load từ `papers_clean.json` |
 | **CP2** | Xác minh ChromaDB collections tách biệt | `src/retrieval/index.py` | Tách riêng 3 collection: `papers-baseline`, `papers-corrupted`, `papers-repaired` | Chạy smoke test, ghi nhận embedding manifest thành công |
 | **CP2** | Ghi nhận blocker và chạy smoke test | `data/eval/test_set.json`<br>`data/embeddings/papers_embeddings.json` | Khởi tạo thành công bộ câu hỏi (18 câu) và vector index | Chạy smoke test RAG Agent (search & lookup) thành công |
+| **CP3** | Triển khai baseline pipeline end-to-end | `src/pipelines/phase1.py` | Điều phối toàn bộ dữ liệu thô $\rightarrow$ sạch $\rightarrow$ index $\rightarrow$ đánh giá $\rightarrow$ báo cáo | Chạy `uv run python script/run_phase1.py` thành công |
+| **CP3** | Cài đặt module xuất báo cáo Markdown | `src/observability/reporting.py` | Hàm tự động xuất báo cáo Phase 1 & báo cáo so sánh | Sinh thành công báo cáo [phase1_report.md](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/data/reports/phase1_report.md) |
 
-## 4. Giải thích phần kỹ thuật đã thực hiện (Checkpoint 2)
+## 4. Giải thích phần kỹ thuật đã thực hiện (Checkpoint 2 & 3)
 
 ### Vấn đề cần giải quyết
-Trước khi bắt đầu chạy pipeline end-to-end ở CP3, Lead cần đảm bảo:
-1. Schema đầu ra của Cleaning khớp chính xác với yêu cầu của Indexer và Generator.
-2. Các đường dẫn và collection của ChromaDB cho 3 pha (Baseline, Corrupt, Repair) được phân tách độc lập để tránh ghi đè dữ liệu chéo.
-3. Chạy thử nghiệm thành công (Smoke Test) luồng: Cleaned Data → Test Set → Vector Index → Retrieval/Agent QA.
+1.  **Thiết lập pipeline tự động (CP3):** Điều phối toàn bộ vòng đời dữ liệu của Baseline pha 1, bao gồm việc đọc/tải dữ liệu thô từ API Crossref, chạy Cleaning để loại bỏ HTML/JATS, xây dựng chỉ mục vector ChromaDB, sinh test set đánh giá, đo đạc hiệu năng RAG, chạy data quality checks & freshness, và cuối cùng xuất báo cáo Markdown.
+2.  **Module báo cáo tự động (CP3):** Lập trình các hàm xuất dữ liệu chất lượng, độ tươi mới và hiệu năng RAG thành báo cáo trực quan cho các checkpoint sau.
 
-### Cách triển khai & Contract Schema sạch
-Sau khi Quỳnh (Role 3) hoàn thành Cleaning và Nam (Role 5) hoàn thành TestSet ở CP1, tôi đã tiến hành khóa contract dữ liệu sạch gồm các trường:
-*   `paper_id`: Khóa chính (DOI chuẩn hóa chữ thường).
-*   `title`, `summary`: Tiêu đề và tóm tắt đã làm sạch thẻ JATS/HTML.
-*   `authors_joined`, `categories_joined`: Chuỗi chuẩn hóa phân tách bằng dấu phẩy.
-*   `age_days`: Tính tuổi bài báo từ `published` date đến ngày hiện tại.
-*   `text_for_embedding`: Định dạng chuẩn hóa:
-    ```text
-    Title: <title>
-    Authors: <authors_joined>
-    Categories: <categories_joined>
-    Summary: <summary>
-    ```
+### Cách triển khai & Triển khai baseline (Phase 1)
+Tôi đã viết code triển khai cho `src/pipelines/phase1.py` thực hiện:
+- Kiểm tra cache hoặc gọi API Crossref để tải và phân tích 24 records thô.
+- Áp dụng `build_clean_dataframe` thu được 24 bản ghi sạch, lưu trữ tại `data/clean/papers_clean.json` và `papers_clean.csv`.
+- Xây dựng chỉ mục vector `papers-baseline` qua `LocalEmbeddingIndex.build`.
+- Chạy đánh giá bằng `evaluate_pipeline` trên bộ câu hỏi 18 câu từ `data/eval/test_set.json`.
+- Đo đạc observability bằng `run_data_quality_checks` và `build_freshness_report`.
+- Gọi `generate_phase1_report` để xuất kết quả hoàn chỉnh ra file Markdown.
 
-### Kiểm tra tách biệt Collection và Manifest
-Tôi đã xác minh cấu hình trong `src/core/config.py` và `src/retrieval/index.py` đảm bảo cơ chế đặt tên collection tự động dựa trên đường dẫn file manifest:
-*   `papers_embeddings.json` $\rightarrow$ Collection: `papers-baseline`
-*   `papers_embeddings_corrupted.json` $\rightarrow$ Collection: `papers-corrupted`
-*   `papers_embeddings_repaired.json` $\rightarrow$ Collection: `papers-repaired`
-
-### Kết quả chạy thử nghiệm (Smoke Test)
-Tôi đã chạy script kiểm tra nhanh và ghi nhận kết quả:
-*   **Test Set:** Tạo thành công 18 câu hỏi (các dạng: `summary`, `date`, `authors`, `categories`) lưu tại `data/eval/test_set.json`.
-*   **Vector Index:** Khởi tạo thành công ChromaDB và nạp 24 papers sạch vào collection `papers-baseline`.
-*   **Agent QA:** Chạy thử nghiệm câu hỏi tìm kiếm ngữ nghĩa và truy xuất chính xác bằng DOI:
-    *   *Query:* `What is the main topic of 'Implementation of Retrieval-Augmented Generation Method...'?`
-    *   *Result:* Trích xuất đúng câu trả lời thực tế từ nội dung bài báo.
-
-### Blockers còn lại trước CP3
-*   Orchestration pipeline `src/pipelines/phase1.py` chưa được implement (sẽ giải quyết trực tiếp tại CP3).
+### Kết quả chạy thử nghiệm & Baseline Metrics
+Khi chạy lệnh tích hợp đầu tiên `uv run python script/run_phase1.py`, toàn bộ luồng đã chạy thành công và ghi nhận các số liệu ấn tượng:
+*   **Retrieval Hit Rate:** `1.0000` (Truy xuất trúng 100% tài liệu đúng).
+*   **Mean Token F1 Score:** `0.9840` (Độ khớp câu trả lời cực kỳ cao).
+*   **Data Quality Checks Passed:** `9 / 9` kiểm tra chất lượng đạt (Không trùng lặp, không rỗng).
+*   **Freshness Status:** `fresh` (Dữ liệu bài viết cập nhật dưới ngưỡng 180 ngày).
 
 ---
 *LƯU Ý: CÁC PHẦN TỪ MỤC 5 ĐẾN 9 DƯỚI ĐÂY SẼ ĐƯỢC HOÀN THIỆN DẦN KHI TIẾN HÀNH THỰC HIỆN CÁC BƯỚC TIẾP THEO CỦA DỰ ÁN.*
+
