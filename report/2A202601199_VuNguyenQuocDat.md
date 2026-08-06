@@ -1,75 +1,170 @@
 # Member Role Report — Day 10: Data Pipeline & Data Observability
+**Thành viên:** Vũ Nguyễn Quốc Đạt (Role 1 - Lead / Pipeline Integrator)
+**MSSV:** 2A202601199
+**Dự án:** Day 10 — Data Pipeline & Data Observability Lab
+
+---
 
 ## 1. Thông tin cá nhân
 
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
-| Họ và tên       | Vũ Nguyễn Quốc Đạt         |
-| MSSV               | 2A202601199                |
-| Khóa/Lớp         | [Khóa/Lớp]                 |
-| Tên nhóm         | Nhóm 5 người               |
+| Họ và tên       | Vũ Nguyễn Quốc Đạt |
+| MSSV               | 2A202601199 |
+| Khóa/Lớp         | Lớp AI Thực Chiến - Advanced Agentic Coding |
+| Tên nhóm         | Vũ Nguyễn Quốc Đạt Group |
 | Vai trò chính    | Role 1 - Lead / Pipeline Integrator |
-| Repository         | [Đường dẫn repository] |
-| Ngày hoàn thành | 2026-08-06                 |
+| Repository         | [GitHub Repository](https://github.com/dav1dvu/DAY10_2A202601199_VuNguyenQuocDat) |
+| Ngày hoàn thành | 2026-08-06 |
+
+---
 
 ## 2. Vai trò và phạm vi công việc
 
 ### Phần việc sở hữu
 
-| Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao  | Trạng thái                                 |
+| Module/deliverable | File/hàm phụ trách | Input nhận vào | Output bàn giao  | Trạng thái |
 | ------------------ | --------------------- | ---------------- | ----------------- | -------------------------------------------- |
-| Settings & Config | `src/core/config.py`<br>`src/core/utils.py` | Environment variables, `.env` file | `Settings` object, path configuration | Hoàn thành phần thiết lập ban đầu (CP0) |
-| Orchestration & Pipeline | `src/pipelines/phase1.py`<br>`src/pipelines/corruption_flow.py` | Cleaned data, metrics, evaluation output | E2E baseline & corruption pipelines (`script/run_phase1.py`, `script/run_corruption_flow.py`) | Sẽ hoàn thiện ở các checkpoint tiếp theo |
+| Baseline Orchestration | [src/pipelines/phase1.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/pipelines/phase1.py) | Settings, Raw crossref cache | `papers_clean.json`, `baseline_metrics.json`, `phase1_report.md` | Hoàn thành |
+| Corruption & Repair Integration | [src/pipelines/corruption_flow.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/pipelines/corruption_flow.py) | Baseline metrics, Raw cache | `papers_clean_corrupted.json`, `papers_clean_repaired.json`, `corruption_report.md` | Hoàn thành |
+| Design & Setup | `report/checkpoint_*` | Starter code, Sơ đồ luồng | Báo cáo mốc thiết kế CP0-CP6, sơ đồ Mermaid | Hoàn thành |
 
 ### Việc hỗ trợ ngoài phạm vi chính
 
-| Hoạt động                         | Thành viên/module được hỗ trợ | Kết quả                    |
-| ------------------------------------ | ------------------------------------ | ---------------------------- |
-| Hỗ trợ thiết lập môi trường | Biên (Role 2), Quỳnh (Role 3), Lan (Role 4), Nam (Role 5) | Đồng bộ môi trường Python 3.12, cài dependencies và khởi tạo file cấu hình `.env` cục bộ. |
+| Hoạt động | Thành viên/module được hỗ trợ | Kết quả |
+| :--- | :--- | :--- |
+| Hỗ trợ sửa lỗi unhashable list | Quỳnh (Role 3) & Nam (Role 5) / Observability | Sửa thành công lỗi crash pandas `df.duplicated()` |
+| Hỗ trợ cấu hình ChromaDB dynamic collections | Lan (Role 4) / RAG & Agent | Lan thiết lập thành công 3 collections độc lập trong ChromaDB |
+
+---
 
 ## 3. Kết quả theo vai trò
 
-| Giai đoạn | Nhiệm vụ đã thực hiện | File/hàm/artifact liên quan | Kết quả bàn giao       | Cách xác minh         |
-| :--- | :--- | :--- | :--- | :--- |
-| **CP0** | Chốt sơ đồ luồng dữ liệu & phân công vai trò | [checkpoint_0_lead_report.md](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/report/checkpoint_0_lead_report.md) | Bản thiết kế chi tiết luồng bàn giao dữ liệu | Đã nộp báo cáo CP0 |
-| **CP0** | Đồng bộ môi trường và khởi tạo file `.env` | `.env` | File `.env` chứa API keys và config | Đã chạy thành công lệnh kiểm tra import gói `src` |
-| **CP2** | Kiểm tra chốt clean schema contract | `src/ingestion/cleaning.py` | Schema dữ liệu sạch thống nhất cho RAG | Xác minh qua DataFrame load từ `papers_clean.json` |
-| **CP2** | Xác minh ChromaDB collections tách biệt | `src/retrieval/index.py` | Tách riêng 3 collection: `papers-baseline`, `papers-corrupted`, `papers-repaired` | Chạy smoke test, ghi nhận embedding manifest thành công |
-| **CP2** | Ghi nhận blocker và chạy smoke test | `data/eval/test_set.json`<br>`data/embeddings/papers_embeddings.json` | Khởi tạo thành công bộ câu hỏi (18 câu) và vector index | Chạy smoke test RAG Agent (search & lookup) thành công |
-| **CP3** | Triển khai baseline pipeline end-to-end | `src/pipelines/phase1.py` | Điều phối toàn bộ dữ liệu thô $\rightarrow$ sạch $\rightarrow$ index $\rightarrow$ đánh giá $\rightarrow$ báo cáo | Chạy `uv run python script/run_phase1.py` thành công |
-| **CP3** | Cài đặt module xuất báo cáo Markdown | `src/observability/reporting.py` | Hàm tự động xuất báo cáo Phase 1 & báo cáo so sánh | Sinh thành công báo cáo [phase1_report.md](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/data/reports/phase1_report.md) |
-| **CP4** | Nghỉ giải lao & chốt kế hoạch giả lập lỗi | [checkpoint_4_break_report.md](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/report/checkpoint_4_break_report.md) | Bản kế hoạch chi tiết kịch bản dữ liệu lỗi cho 5 vai trò | Đã nộp báo cáo giải lao CP4 |
-| **CP5** | Giả lập lỗi & đo lường độ suy giảm hiệu năng | `src/pipelines/corruption_flow.py` | `papers_clean_corrupted.json`<br>`corrupted_metrics.json` | Chạy pipeline ghi nhận sụt giảm Hit Rate về `0.8333` và F1 về `0.7222` |
-| **CP6** | Phục hồi dữ liệu từ lineage & báo cáo so sánh | `src/pipelines/corruption_flow.py` | `papers_clean_repaired.json`<br>`repaired_metrics.json`<br>`corruption_report.md` | Chạy thành công toàn bộ luồng tích hợp, khôi phục RAG Hit Rate & F1 về `1.0000` |
-
-## 4. Giải thích phần kỹ thuật đã thực hiện (Checkpoint 2, 3, 4, 5 & 6)
-
-### Vấn đề cần giải quyết
-1.  **Thiết lập pipeline tự động (CP3):** Điều phối toàn bộ vòng đời dữ liệu của Baseline pha 1, bao gồm việc đọc/tải dữ liệu thô từ API Crossref, chạy Cleaning để loại bỏ HTML/JATS, xây dựng chỉ mục vector ChromaDB, sinh test set đánh giá, đo đạc hiệu năng RAG, chạy data quality checks & freshness, và cuối cùng xuất báo cáo Markdown.
-2.  **Module báo cáo tự động (CP3):** Lập trình các hàm xuất dữ liệu chất lượng, độ tươi mới và hiệu năng RAG thành báo cáo trực quan cho các checkpoint sau.
-3.  **Kế hoạch Corruption (CP4):** Thống nhất kịch bản làm lỗi dữ liệu (droppping records, blanking text, staling timestamps, etc.) để chuẩn bị chạy tích hợp trong CP5.
-4.  **Simulate Corruption & Đo lường Impact (CP5):** Thực thi 6 kiểu lỗi dữ liệu khác nhau trên tập data sạch và đo lường độ suy thoái của RAG Agent (Hit Rate sụt giảm thế nào).
-5.  **Lineage Recovery & Comparison (CP6):** Khôi phục dữ liệu thô gốc từ `crossref_records.json` bằng cách chạy lại cleaning thay vì sửa thủ công, đánh giá lại RAG và xuất báo cáo so sánh chi tiết.
-
-### Cách triển khai & Triển khai baseline (Phase 1)
-Tôi đã viết code triển khai cho `src/pipelines/phase1.py` thực hiện:
-- Kiểm tra cache hoặc gọi API Crossref để tải và phân tích 24 records thô.
-- Áp dụng `build_clean_dataframe` thu được 24 bản ghi sạch, lưu trữ tại `data/clean/papers_clean.json` và `papers_clean.csv`.
-- Xây dựng chỉ mục vector `papers-baseline` qua `LocalEmbeddingIndex.build`.
-- Chạy đánh giá bằng `evaluate_pipeline` trên bộ câu hỏi 18 câu từ `data/eval/test_set.json`.
-- Đo đạc observability bằng `run_data_quality_checks` và `build_freshness_report`.
-- Gọi `generate_phase1_report` để xuất kết quả hoàn chỉnh ra file Markdown.
-
-### Triển khai Corruption & Repair (Phase 2 - CP5 & CP6)
-Tôi đã viết code tích hợp trong `src/pipelines/corruption_flow.py` thực hiện:
-- Đọc baseline data sạch và sinh dữ liệu lỗi thông qua `corrupt_clean_dataframe`.
-- Lưu trữ các tệp lỗi `papers_clean_corrupted.csv`/`json` và xây dựng chỉ mục `papers-corrupted` trên ChromaDB.
-- Đánh giá RAG trên dữ liệu lỗi: Hit Rate sụt giảm nghiêm trọng từ `1.0000` xuống `0.8333` và F1 sụt giảm từ `1.0000` xuống `0.7222`. Số lượng kiểm tra chất lượng dữ liệu thành công giảm từ `8 / 9` xuống `5 / 9`.
-- Thực hiện Repair bằng cách nạp lại tệp tin thô gốc từ `load_raw_records` và chạy lại `build_clean_dataframe` (khôi phục toàn bộ lineage gốc).
-- Xây dựng chỉ mục `papers-repaired` trên ChromaDB và chạy đánh giá phục hồi: RAG Hit Rate & F1 khôi phục hoàn hảo về mức `1.0000`, Quality checks đạt `8 / 9`.
-- Gọi `generate_corruption_report` xuất báo cáo so sánh [corruption_report.md](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/data/reports/corruption_report.md).
+| Nhiệm vụ đã thực hiện | File/hàm/artifact liên quan | Kết quả bàn giao | Cách xác minh |
+| :--- | :--- | :--- | :--- |
+| **CP0** - Chốt sơ đồ luồng dữ liệu & phân công vai trò | [checkpoint_0_lead_report.md](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/report/checkpoint_0_lead_report.md) | Bản thiết kế chi tiết luồng bàn giao dữ liệu | Đã nộp báo cáo CP0 |
+| **CP2** - Chốt clean schema contract & smoke test | `data/eval/test_set.json`<br>`data/embeddings/papers_embeddings.json` | Khởi tạo thành công bộ câu hỏi (18 câu) và vector index | Chạy smoke test RAG Agent thành công |
+| **CP3** - Triển khai baseline pipeline end-to-end | [src/pipelines/phase1.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/pipelines/phase1.py) | Điều phối toàn bộ dữ liệu thô $\rightarrow$ sạch $\rightarrow$ index $\rightarrow$ đánh giá $\rightarrow$ báo cáo | Chạy `uv run python script/run_phase1.py` thành công |
+| **CP4** - Thiết kế kịch bản dữ liệu lỗi | [checkpoint_4_break_report.md](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/report/checkpoint_4_break_report.md) | Bản kế hoạch chi tiết kịch bản dữ liệu lỗi cho 5 vai trò | Đã nộp báo cáo giải lao CP4 |
+| **CP5** - Giả lập lỗi & đo lường độ suy giảm hiệu năng | [src/pipelines/corruption_flow.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/pipelines/corruption_flow.py) | `papers_clean_corrupted.json`<br>`corrupted_metrics.json` | Chạy pipeline ghi nhận sụt giảm Hit Rate về `0.8333` |
+| **CP6** - Phục hồi dữ liệu từ lineage & báo cáo so sánh | [src/pipelines/corruption_flow.py](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/src/pipelines/corruption_flow.py) | `papers_clean_repaired.json`<br>`repaired_metrics.json`<br>`corruption_report.md` | Phục hồi RAG Hit Rate & F1 về `1.0000` |
 
 ---
-*LƯU Ý: CÁC MỤC DƯỚI ĐÂY LÀ PHẦN LÝ THUYẾT VÀ BÀI TẬP TRẢ LỜI CỦA CÁC VAI TRÒ KHÁC SẼ ĐƯỢC CẢ NHÓM HOÀN THIỆN ĐỂ BÁO CÁO THẦY CÔ.*
 
+## 4. Giải thích phần kỹ thuật đã thực hiện
 
+### Vấn đề cần giải quyết
+Là Lead / Pipeline Integrator, nhiệm vụ của tôi là thiết lập luồng dữ liệu tự động cho cả Pha 1 và Pha 2, liên kết các module do Biên (Ingestion), Quỳnh (Cleaning/Corruption), Lan (RAG), và Nam (Evaluation/Observability) phát triển thành một hệ thống liền mạch, đồng thời đảm bảo cơ chế tự động ghi nhận và xuất báo cáo so sánh.
+
+### Cách triển khai
+Tôi đã viết code triển khai cho `src/pipelines/phase1.py` và `src/pipelines/corruption_flow.py`:
+- Sử dụng cấu trúc lập trình hướng modul, gọi tuần tự các hàm xử lý từ các package con.
+- Sử dụng file cấu hình `settings` làm cầu nối định cấu hình đường dẫn cho các tệp trung gian, đảm bảo tính động và linh hoạt.
+- Tự động hóa việc ghi nhận kết quả đánh giá (metrics, answers) và báo cáo chất lượng dữ liệu (quality, freshness) thành báo cáo Markdown thông qua hàm `generate_corruption_report` của Nam.
+
+### Input, output và contract
+
+| Thành phần                   | Mô tả                                     |
+| ------------------------------ | ------------------------------------------- |
+| Input                          | Dữ liệu cấu hình `Settings` từ `src/core/config.py` và cache dữ liệu thô `crossref_records.json` |
+| Output                         | Các tệp CSV/JSON sạch, embeddings, bộ metrics đánh giá, và báo cáo comparison report Markdown |
+| Module phụ thuộc             | `ingestion`, `retrieval`, `evaluation`, `observability` |
+| Module sử dụng output        | RAG Agent QA và Báo cáo tổng thể cho Nhóm/Giáo viên |
+| Điều kiện lỗi cần xử lý | Lỗi thiếu tệp tin baseline khi bắt đầu chạy Pha 2, lỗi database bị khóa do đa luồng |
+
+### Cách xác minh
+
+```bash
+uv run python script/run_corruption_flow.py
+```
+- **Kết quả mong đợi:** Toàn bộ quy trình lỗi hóa, đánh giá, khôi phục, và sinh so sánh diễn ra tự động 100% không phát sinh lỗi. Báo cáo `corruption_report.md` được sinh ra với đầy đủ số liệu 3 cột.
+- **Kết quả thực tế:** Toàn bộ pipeline chạy hoàn thành thành công trong 10 giây.
+- **Artifact/log:** [data/reports/corruption_report.md](file:///c:/CODE/AITHUCCHIEN/LABS/DAY10_2A202601199_VuNguyenQuocDat/data/reports/corruption_report.md).
+
+---
+
+## 5. Một quyết định kỹ thuật quan trọng
+
+- **Bối cảnh:** Lựa chọn phương pháp đặt tên collection cho ChromaDB. Nếu sử dụng một collection cố định cho cả ba pha (Baseline, Corrupted, Repaired), dữ liệu sẽ bị ghi đè chéo, dẫn đến sai lệch kết quả đo.
+- **Các phương án đã cân nhắc:**
+  1.  Sử dụng một cơ sở dữ liệu ChromaDB duy nhất và xóa/recreate collection liên tục.
+  2.  Đặt tên collection động dựa trên đường dẫn tệp embeddings manifest đầu ra (`embeddings_output_path`).
+- **Phương án đã chọn:** Phương án 2 (Đặt tên collection động).
+- **Lý do:** Giúp duy trì đồng thời cả ba collections (`papers-baseline`, `papers-corrupted`, `papers-repaired`) trong cơ sở dữ liệu SQLite của ChromaDB, cho phép RAG Agent có thể truy xuất và so sánh kết quả độc lập bất cứ lúc nào mà không cần build lại chỉ mục từ đầu.
+- **Bằng chứng quyết định phù hợp:** Kết quả của smoke test và test set đánh giá ở CP5/CP6 chạy độc lập và ghi nhận metrics hoàn chỉnh cho cả 3 trạng thái.
+
+---
+
+## 6. Một lỗi hoặc blocker đã xử lý
+
+- **Triệu chứng/lỗi nguyên văn:** Lỗi `chromadb.errors.InternalError: Collection [papers-baseline] already exists` khi chạy lại pipeline.
+- **Lệnh hoặc bước tái hiện:** Chạy lại `uv run python script/run_phase1.py` khi collection đã tồn tại trong cơ sở dữ liệu SQLite của ChromaDB.
+- **Nguyên nhân gốc:** Khi sử dụng SQLite persistent backend của ChromaDB phiên bản mới, hàm `delete_collection` đôi khi bị trễ hoặc bị khóa do tiến trình trước đó chưa được ngắt hẳn, dẫn tới việc gọi `create_collection` ngay sau đó bị lỗi trùng lặp collection.
+- **Cách xử lý:** Bổ sung cơ chế fallback trong `src/retrieval/index.py`:
+  ```python
+  try:
+      collection = client.create_collection(name=collection_name, configuration={"hnsw": {"space": "cosine"}})
+  except Exception:
+      collection = client.get_or_create_collection(name=collection_name, metadata={"hnsw:space": "cosine"})
+      existing = collection.get()
+      if existing and existing.get("ids"):
+          collection.delete(ids=existing["ids"])
+  ```
+- **Cách xác minh sau khi sửa:** Chạy lại script nhiều lần liên tiếp không còn phát sinh lỗi trùng lặp collection.
+
+---
+
+## 7. Hiểu biết về luồng end-to-end
+
+1.  **Dữ liệu đi từ Crossref đến vector index:** Ingest lấy dữ liệu thô (JSON) $\rightarrow$ Cleaning loại bỏ thẻ JATS/HTML, chuẩn hóa schema sang Pandas DataFrame $\rightarrow$ Sinh embeddings thông qua mô hình MiniLM $\rightarrow$ Nạp embeddings, metadata và ID vào collection của ChromaDB.
+2.  **Đo retrieval/answer quality:** Dùng 18 câu hỏi trong test set. Với mỗi câu hỏi, RAG Agent tìm top_k tài liệu tương đồng nhất. Đánh giá tính chính xác của retrieval bằng cách so sánh DOI tài liệu trích xuất được với ground-truth ID. So sánh câu trả lời của LLM với ground-truth answer thông qua Token F1 và Judge evaluator để tính điểm chính xác.
+3.  **Quality checks khác freshness monitoring:** Quality checks là kiểm tra tính toàn vẹn tĩnh của dữ liệu (trùng lặp, rỗng, độ dài tối thiểu). Freshness monitoring là kiểm tra động theo thời gian thực (tuổi của dữ liệu có vượt quá ngưỡng 180 ngày so với thời điểm chạy hay không).
+4.  **Vì sao dùng cùng test set:** Để đảm bảo tính đồng nhất của phép đo. Bất kỳ sự thay đổi nào của test set sẽ làm nhiễu kết quả đánh giá, khiến ta không thể đo lường chính xác tác động thực tế của lỗi dữ liệu và hiệu quả của cơ chế phục hồi.
+5.  **Repair thành công dựa trên:** RAG Hit Rate & Token F1 khôi phục về mức baseline (`1.0000`), chất lượng dữ liệu sạch đạt `8 / 9` checks thành công, và tệp so sánh `corruption_report.md` được cập nhật đầy đủ số liệu phục hồi.
+
+---
+
+## 8. Phân tích kết quả
+
+### Metrics chính
+
+| Metric/signal          | Baseline | Corrupted | Repaired | Nhận xét của cá nhân |
+| ---------------------- | -------: | --------: | -------: | ------------------------- |
+| `retrieval_hit_rate` | `1.0000` | `0.8333` | `1.0000` | Sụt giảm mạnh ở pha lỗi và hồi phục 100% |
+| `mean_token_f1`      | `1.0000` | `0.7222` | `1.0000` | Sụt giảm mạnh ở pha lỗi và hồi phục 100% |
+| `judge_accuracy`     | `1.0000` | `0.7222` | `1.0000` | Sụt giảm mạnh ở pha lỗi và hồi phục 100% |
+| `mean_judge_score`   | `5.0000` | `3.8889` | `5.0000` | Sụt giảm mạnh ở pha lỗi và hồi phục 100% |
+| Quality checks         | `8 / 9` | `5 / 9` | `8 / 9` | Rơi rớt 3 checks ở pha lỗi và hồi phục hoàn toàn |
+| Freshness status       | `stale` | `stale` | `stale` | Bị stale từ baseline do dữ liệu thử nghiệm cũ |
+
+### Kết luận từ số liệu
+1.  **Lỗi hóa:** Dữ liệu bị làm lỗi (`missing summary`, `noisy text`) $\rightarrow$ Kiểm định chất lượng giảm từ `8/9` xuống `5/9` $\rightarrow$ RAG Hit Rate giảm từ `1.0000` xuống `0.8333`.
+2.  **Khôi phục:** Khôi phục từ Raw Lineage $\rightarrow$ Chất lượng dữ liệu phục hồi về `8/9` $\rightarrow$ RAG Hit Rate quay lại `1.0000`.
+
+Lỗi `blank_summary` và `noisy_summary` ảnh hưởng rõ nhất vì tóm tắt là trường dữ liệu chứa nhiều ngữ nghĩa quan trọng nhất để sinh embedding vector. Khi tóm tắt bị mất hoặc bị nhiễu, khoảng cách cosine giữa câu hỏi và tài liệu bị lệch hướng nghiêm trọng.
+
+---
+
+## 9. Điều học được và hướng cải thiện
+
+### Ba điều quan trọng nhất
+1.  Hiểu rõ cơ chế xây dựng một data pipeline tự động end-to-end từ thu thập đến ứng dụng RAG.
+2.  Nhận thức được tầm quan trọng của Data Observability: dữ liệu thầm lặng bị lỗi sẽ phá hỏng ứng dụng AI phía sau mà không hề báo trước nếu không có quality/freshness checks.
+3.  Phương pháp khôi phục dữ liệu chuẩn mực nhất là sửa lỗi từ gốc (Raw Lineage) và chạy lại pipeline thay vì sửa đổi thủ công trên tầng sạch.
+
+### Nếu có thêm thời gian
+Tích hợp kiểm tra chất lượng dữ liệu tự động (Great Expectations) trực tiếp vào luồng CI/CD, ngăn chặn việc cập nhật cơ sở dữ liệu vector nếu kiểm thử chất lượng bị thất bại.
+
+---
+
+## 10. Cam kết của thành viên
+
+- [x] Nội dung báo cáo phản ánh đúng phần việc và mức hiểu của tôi.
+- [x] Tôi có thể giải thích luồng end-to-end, không chỉ module mình phụ trách.
+- [x] Mọi kết luận về kết quả đều có artifact hoặc metric để đối chiếu.
+- [x] Tôi không ghi “đã chạy thành công” cho phần chưa được kiểm chứng.
+- [x] Báo cáo không chứa `.env`, API key, token hoặc secret.
+- [x] Báo cáo này không phải bản sao nguyên văn của báo cáo nhóm hoặc báo cáo thành viên khác.
+
+**Họ và tên:** Vũ Nguyễn Quốc Đạt
+**Ngày xác nhận:** 2026-08-06
